@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import "./Home.css";
+import "./home.css";
 import logo from "../../assets/images/logo.png"; // place logo.png in the same folder, or update the path
 
 /**
