@@ -156,6 +156,10 @@ export default function Home() {
             <span className="rs-notebook__spine" />
             <span className="rs-notebook__label">RIGHT SIDE</span>
           </div>
+          <p className="rs-hero__art-note rs-fade" style={{ "--d": "320ms" }}>
+            I wish, you always write on the best side of a notebook…
+            the rightside!
+          </p>
         </div>
       </section>
 
