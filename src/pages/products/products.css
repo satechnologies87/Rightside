@@ -1,0 +1,441 @@
+/* ===========================================================
+   RightSide — Products page styles
+   Shares the same tokens, fonts, nav and footer treatment as
+   Home.css / About.css.
+   =========================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Inter:wght@400;500;600&display=swap");
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #efe8db;
+}
+
+#root {
+  background: #f6f2e9;
+}
+
+html {
+  font-size: 92%;
+}
+
+.rs {
+  --cream: #f6f2e9;
+  --cream-alt: #efe8db;
+  --card: #fbf8f2;
+  --ink: #1b1b18;
+  --ink-soft: #55503f;
+  --ink-faint: #8a8371;
+  --rust: #c1443a;
+  --gold: #c98a3e;
+  --line: rgba(27, 27, 24, 0.12);
+  --shadow: 0 20px 40px -20px rgba(27, 27, 24, 0.25);
+
+  --font-display: "Fraunces", "Iowan Old Style", serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+.rs * {
+  box-sizing: border-box;
+}
+
+.rs a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.rs img {
+  max-width: 100%;
+  display: block;
+}
+
+.rs-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.rs-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 600;
+}
+
+.rs .rs-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #1b1b18;
+  color: #f6f2e9;
+  border: 1.5px solid #1b1b18;
+  padding: 0.85rem 1.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+
+.rs-cta svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.35s ease;
+}
+
+.rs .rs-cta:hover {
+  background: #f6f2e9;
+  color: #1b1b18;
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+.rs-cta:hover svg {
+  transform: translateX(4px);
+}
+
+/* ---------- scroll reveal ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+
+[data-reveal].in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===================== NAV ===================== */
+.rs-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--cream);
+  border-bottom: 1px solid var(--line);
+}
+
+.rs-nav__inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0.8rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.rs-logo img {
+  height: 34px;
+  width: auto;
+}
+
+.rs-nav__links {
+  display: flex;
+  gap: 2.4rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  margin-left: auto;
+}
+
+.rs-nav__links a {
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.rs-nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rs-nav__links a:hover::after,
+.rs-nav__links a.is-active::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.rs-bag {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink);
+  margin-left: 2.4rem;
+  transition: transform 0.25s ease;
+}
+
+.rs-bag:hover {
+  transform: translateY(-2px);
+}
+
+.rs-bag svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ===================== PAGE INTRO ===================== */
+.rs-shop-hero {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(2.4rem, 6vw, 4.5rem) 2rem clamp(2rem, 5vw, 3rem);
+  text-align: center;
+}
+
+.rs-shop-hero__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+  line-height: 1.08;
+  margin: 0.6rem 0 1rem;
+}
+
+.rs-shop-hero__lede {
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 56ch;
+  margin: 0 auto;
+}
+
+/* ===================== PRODUCT GRID ===================== */
+.rs-shop-grid {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 2rem clamp(3rem, 7vw, 5rem);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+}
+
+.rs-product {
+  display: flex;
+  flex-direction: column;
+}
+
+.rs-product__info {
+  padding-top: 1.2rem;
+}
+
+.rs-product__info h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.3rem;
+  margin: 0 0 0.35rem;
+}
+
+.rs-product__pack {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  margin: 0 0 0.7rem;
+}
+
+.rs-product__specs {
+  list-style: none;
+  margin: 0 0 1.3rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
+}
+
+.rs-product__specs li {
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.01em;
+  position: relative;
+  padding-left: 0.9rem;
+}
+
+.rs-product__specs li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--rust);
+}
+
+/* ===================== GALLERY ===================== */
+.rs-gallery {
+  position: relative;
+  background: var(--cream-alt);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.rs-gallery__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.rs-gallery__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(246, 242, 233, 0.85);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.rs-gallery__btn:hover {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.rs-gallery__btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.rs-gallery__btn--prev {
+  left: 0.7rem;
+}
+
+.rs-gallery__btn--next {
+  right: 0.7rem;
+}
+
+.rs-gallery__dots {
+  position: absolute;
+  bottom: 0.7rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+}
+
+.rs-gallery__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(27, 27, 24, 0.3);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.rs-gallery__dot.is-active {
+  background: var(--ink);
+  transform: scale(1.2);
+}
+
+/* ===================== FOOTER ===================== */
+.rs-footer {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 2rem 2rem 1.1rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 1.5rem;
+  font-size: 0.88rem;
+  border-top: 1px solid var(--line);
+  margin-top: 1rem;
+}
+
+.rs-footer__logo {
+  height: 30px;
+  margin-bottom: 0.6rem;
+}
+
+.rs-footer__brand p {
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.rs-footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.rs-footer__col a svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.rs-footer__col a:hover svg {
+  color: var(--rust);
+  transform: translateY(-2px);
+}
+
+.rs-footer__bottom {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--line);
+  margin-top: 1.6rem;
+  padding-top: 1.2rem;
+  color: var(--ink-faint);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 780px) {
+  .rs-shop-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .rs-footer {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .rs-nav__links {
+    display: none;
+  }
+  .rs-footer {
+    grid-template-columns: 1fr;
+  }
+  /* Buttons stay visible (not hover-only) so they work by tap */
+  .rs-gallery__btn {
+    background: rgba(246, 242, 233, 0.92);
+  }
+}
+
+/* ---------- accessibility ---------- */
+.rs a:focus-visible,
+.rs button:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

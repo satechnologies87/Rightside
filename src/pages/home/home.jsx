@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Link, NavLink } from "react-router-dom";
 import "./home.css";
 import logo from "../../assets/images/logo.png"; // place logo.png in the same folder, or update the path
 
@@ -46,25 +47,21 @@ const FEATURES = [
   },
 ];
 
+import beachFlat from "../../assets/images/products/beach-flat.png";
+import barnyardFlat from "../../assets/images/products/barnyard-flat.png";
+
 const PRODUCTS = [
   {
-    name: "A5 Soft Cover Notebook",
-    specs: "A5 · 100gsm paper · 96 pages",
-    price: "₹299",
-    tone: "dark",
+    name: "Beach Day",
+    specs: "Pack of 3 · King size · 100 pages",
+    price: "₹240",
+    image: beachFlat,
   },
   {
-    name: "Hard Cover Notebook",
-    specs: "A5 · 120gsm paper · 160 pages",
-    price: "₹499",
-    tone: "light",
-  },
-  {
-    name: "Planner — 2026 Edition",
-    specs: "A5 · 100gsm paper · 200 pages, Jan–Dec",
-    price: "₹699",
-    tone: "dark",
-    ruled: true,
+    name: "Barnyard",
+    specs: "Pack of 3 · King size · 100 pages",
+    price: "₹240",
+    image: barnyardFlat,
   },
 ];
 
@@ -100,12 +97,16 @@ export default function Home() {
       {/* ---------- NAV ---------- */}
       <header className="rs-nav">
         <div className="rs-nav__inner">
-          <div className="rs-logo">
+          <Link to="/" className="rs-logo">
             <img src={logo} alt="RightSide" />
-          </div>
+          </Link>
           <nav className="rs-nav__links">
-            <a href="#shop">Shop</a>
-            <a href="#about">About</a>
+            <NavLink to="/products" className={({ isActive }) => (isActive ? "is-active" : undefined)}>
+              Shop
+            </NavLink>
+            <NavLink to="/about" className={({ isActive }) => (isActive ? "is-active" : undefined)}>
+              About
+            </NavLink>
             <a href="#contact">Contact</a>
           </nav>
           <button className="rs-bag" aria-label="Cart">
@@ -143,12 +144,12 @@ export default function Home() {
           <p className="rs-hero__sub rs-fade" style={{ "--d": "280ms" }}>
             Minimal notebooks crafted for modern thinkers.
           </p>
-          <a href="#shop" className="rs-cta rs-fade" style={{ "--d": "370ms" }}>
+          <Link to="/products" className="rs-cta rs-fade" style={{ "--d": "370ms" }}>
             Explore Collection
             <svg viewBox="0 0 16 16" fill="none">
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" />
             </svg>
-          </a>
+          </Link>
         </div>
 
         <div className="rs-hero__art rs-fade" style={{ "--d": "220ms" }}>
@@ -183,12 +184,12 @@ export default function Home() {
       <section className="rs-collection" id="shop">
         <div className="rs-collection__head" data-reveal>
           <span className="rs-label">Featured Collection</span>
-          <a href="#all" className="rs-viewall">
+          <Link to="/products" className="rs-viewall">
             View All
             <svg viewBox="0 0 16 16" fill="none">
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" />
             </svg>
-          </a>
+          </Link>
         </div>
 
         <div className="rs-grid">
@@ -200,11 +201,7 @@ export default function Home() {
               style={{ "--i": i }}
             >
               <div className="rs-card__art">
-                <div className={`rs-notebook rs-notebook--${p.tone}`}>
-                  <span className="rs-notebook__spine" />
-                  {p.ruled && <span className="rs-notebook__coil" />}
-                  <span className="rs-notebook__label">RIGHT SIDE</span>
-                </div>
+                <img src={p.image} alt={p.name} className="rs-card__img" />
               </div>
               <div className="rs-card__info">
                 <div>
@@ -212,11 +209,11 @@ export default function Home() {
                   <p className="rs-specs">{p.specs}</p>
                   <p className="rs-price">{p.price}</p>
                 </div>
-                <button className="rs-arrow" aria-label={`View ${p.name}`}>
+                <Link to="/products" className="rs-arrow" aria-label={`View ${p.name}`}>
                   <svg viewBox="0 0 16 16" fill="none">
                     <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" />
                   </svg>
-                </button>
+                </Link>
               </div>
             </article>
           ))}
@@ -240,17 +237,19 @@ export default function Home() {
         </div>
         <div className="rs-footer__col">
           <span className="rs-label">Follow Us</span>
-          <a href="https://instagram.com" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+          <a href="https://instagram.com/rightside.it" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" style={{ width: '20px', height: '20px' }}>
               <rect x="3" y="3" width="18" height="18" rx="5" />
               <circle cx="12" cy="12" r="4" />
               <circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none" />
             </svg>
+            rightside.it
           </a>
         </div>
         <div className="rs-footer__col">
           <span className="rs-label">Contact</span>
-          <a href="mailto:hello@rightside.in">hello@rightside.in</a>
+          <a href="mailto:rightsidestationery@gmail.com">rightsidestationery@gmail.com</a>
+          <a href="tel:8136861300">813 686 1300</a>
         </div>
         <div className="rs-footer__col">
           <span className="rs-label">Made in India</span>
