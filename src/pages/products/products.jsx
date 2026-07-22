@@ -182,7 +182,7 @@ export default function Products() {
         <div className="rs-footer__col">
           <span className="rs-label">Contact</span>
           <a href="mailto:rightsidestationery@gmail.com">rightsidestationery@gmail.com</a>
-          <a href="tel:8136861300">813 686 1300</a>
+          <a href="tel:8136861300">+91-8136861300</a>
         </div>
         <div className="rs-footer__col">
           <span className="rs-label">Made in India</span>

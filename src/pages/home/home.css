@@ -15,6 +15,7 @@ body {
   margin: 0;
   padding: 0;
   background: #efe8db;
+  overflow-x: hidden; /* guards against the 100vw hero bleed causing a horizontal scrollbar */
 }
 
 #root {
@@ -146,10 +147,23 @@ html {
 }
 
 /* ===================== NOTEBOOK HERO BACKGROUND =====================
-   Ruled horizontal lines + a red vertical margin line, scoped to the
-   hero section only (the "portion above the cards"). Lives on
-   .rs-hero::before so no extra markup is needed in the JSX; the hero's
-   own text/art get lifted onto z-index 1 so they sit above the lines. */
+   Ruled horizontal lines + red vertical margin lines, scoped to the
+   hero section only (the "portion above the cards").
+
+   These are now split into two layers so the ruled lines can bleed
+   all the way to the true edges of the browser window, independent
+   of the 1240px max-width the hero content is centered within:
+
+   - ::before  → horizontal ruled lines, full-bleed to the viewport
+                 (100vw trick, not clipped by the hero's max-width)
+   - ::after   → red vertical margin lines, stays anchored to the
+                 hero container so it lines up with the text column.
+                 Now draws TWO lines — one inset from the left edge
+                 and a mirrored one inset from the right edge — so
+                 the notebook-margin effect reaches both sides.
+
+   The hero's own text/art get lifted onto z-index 1 so they sit
+   above both layers. */
 .rs-hero {
   position: relative;
   z-index: 1;
@@ -158,10 +172,30 @@ html {
 .rs-hero::before {
   content: "";
   position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--rule-gap) - 1px),
+    rgba(85, 80, 63, 0.16) calc(var(--rule-gap) - 1px),
+    rgba(85, 80, 63, 0.16) var(--rule-gap)
+  );
+}
+
+.rs-hero::after {
+  content: "";
+  position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   background-image:
+    /* left margin line */
     linear-gradient(
       to right,
       transparent 0,
@@ -170,12 +204,14 @@ html {
       rgba(193, 68, 58, 0.38) var(--margin-inset),
       transparent var(--margin-inset)
     ),
-    repeating-linear-gradient(
-      to bottom,
+    /* right margin line (mirrored) */
+    linear-gradient(
+      to left,
       transparent 0,
-      transparent calc(var(--rule-gap) - 1px),
-      rgba(85, 80, 63, 0.16) calc(var(--rule-gap) - 1px),
-      rgba(85, 80, 63, 0.16) var(--rule-gap)
+      transparent calc(var(--margin-inset) - 2px),
+      rgba(193, 68, 58, 0.38) calc(var(--margin-inset) - 2px),
+      rgba(193, 68, 58, 0.38) var(--margin-inset),
+      transparent var(--margin-inset)
     );
 }
 
