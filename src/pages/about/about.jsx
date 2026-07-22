@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import "./About.css";
+import "./about.css";
 import logo from "../../assets/images/logo.png";
 import founderPhoto from "../../assets/images/founder.jpeg";
 
