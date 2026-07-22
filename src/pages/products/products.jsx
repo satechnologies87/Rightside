@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import "./Products.css";
+import "./products.css";
 import logo from "../../assets/images/logo.png";
 
 import beachFlat from "../../assets/images/products/beach-flat.png";
