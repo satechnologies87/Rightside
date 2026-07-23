@@ -331,8 +331,18 @@ html {
 }
 
 @media (max-width: 560px) {
+  .rs-nav__inner {
+    padding: 0.8rem 1rem;
+    justify-content: space-between;
+  }
   .rs-nav__links {
-    display: none;
+    display: flex;
+    gap: 1.2rem;
+    font-size: 0.8rem;
+    margin-left: auto;
+  }
+  .rs-bag {
+    margin-left: 1.2rem;
   }
   .rs-footer {
     grid-template-columns: 1fr;

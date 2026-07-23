@@ -165,6 +165,47 @@ function ProductSlider({ images }) {
   );
 }
 
+function WritingNote() {
+  const prefix = "I wish, you always write on the best side of a notebook… ";
+  const animated = "the rightside!";
+  const [typedCount, setTypedCount] = useState(0);
+  const [isDone, setIsDone] = useState(false);
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setStarted(true), 1600);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < animated.length) {
+        i++;
+        setTypedCount(i);
+      } else {
+        setIsDone(true);
+        clearInterval(interval);
+      }
+    }, 140); // slowed down for a slower, more natural hand-written typing speed
+    return () => clearInterval(interval);
+  }, [started]);
+
+  return (
+    <p className="rs-hero__art-note">
+      {prefix}
+      <br />
+      <span className="rs-writing-animated">
+        {animated.substring(0, typedCount)}
+        {!isDone && started && (
+          <span className="rs-pencil-cursor" aria-hidden="true">✏️</span>
+        )}
+      </span>
+    </p>
+  );
+}
+
 export default function Home() {
   useScrollReveal();
   const underlineRef = useRef(null);
@@ -226,27 +267,13 @@ export default function Home() {
         </div>
 
         <div className="rs-hero__art rs-fade" style={{ "--d": "220ms" }}>
-          <div className="rs-flipbook" aria-label="Beach Day notebook, hover to see the back cover">
-            <div className="rs-flipbook__inner">
-              <img
-                src={notebookFront}
-                alt="RightSide Beach Day notebook — front cover"
-                className="rs-flipbook__face rs-flipbook__face--front"
-              />
-              <img
-                src={notebookBack}
-                alt="RightSide Beach Day notebook — back cover"
-                className="rs-flipbook__face rs-flipbook__face--back"
-              />
-            </div>
-          </div>
-          <p className="rs-hero__art-note rs-fade" style={{ "--d": "320ms" }}>
-            I wish, you always write on the best side of a notebook…
-            the rightside!
-          </p>
+          <img
+            src={verticalLogo}
+            alt="RightSide Vertical Logo"
+            className="rs-hero__main-logo"
+          />
+          <WritingNote />
         </div>
-
-        <img src={verticalLogo} alt="RightSide" className="rs-hero__vlogo" />
       </section>
 
       {/* ---------- FEATURES ---------- */}
