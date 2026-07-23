@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "./home.css";
 import logo from "../../assets/images/logo.png"; // place logo.png in the same folder, or update the path
@@ -50,20 +50,21 @@ const FEATURES = [
 import beachFlat from "../../assets/images/products/beach-flat.png";
 import barnyardFlat from "../../assets/images/products/barnyard-flat.png";
 
-const PRODUCTS = [
-  {
-    name: "Beach Day",
-    specs: "Pack of 3 · King size · 100 pages",
-    price: "₹240",
-    image: beachFlat,
-  },
-  {
-    name: "Barnyard",
-    specs: "Pack of 3 · King size · 100 pages",
-    price: "₹240",
-    image: barnyardFlat,
-  },
-];
+// Hero notebook — front/back cover crops used for the hover-flip visual.
+import notebookFront from "../../assets/images/products/beach-cover-front.png";
+import notebookBack from "../../assets/images/products/beach-cover-back.png";
+import verticalLogo from "../../assets/images/vertical-logo.png";
+
+// Single product, two cover designs — shown as a sliding gallery on the card.
+const PRODUCT = {
+  name: "Beach Day & Barnyard",
+  specs: "Pack of 3 · King size · 100 pages · 2 designs",
+  price: "₹240",
+  images: [
+    { src: beachFlat, alt: "Beach Day cover" },
+    { src: barnyardFlat, alt: "Barnyard cover" },
+  ],
+};
 
 /* Hand-sketched icon strokes, matching the logo's chalky line quality */
 function FeatureIcon({ type }) {
@@ -85,6 +86,82 @@ function FeatureIcon({ type }) {
     <svg viewBox="0 0 40 40" className="feature-icon">
       <path d="M20 6 L23 17 L34 20 L23 23 L20 34 L17 23 L6 20 L17 17 Z" />
     </svg>
+  );
+}
+
+/**
+ * Sliding image gallery for a product card. Click the arrows or a dot
+ * to move between designs; the track shifts on a CSS transform so it
+ * stays snappy and needs no extra libraries.
+ */
+function ProductSlider({ images }) {
+  const [index, setIndex] = useState(0);
+  const count = images.length;
+
+  const go = (next) => setIndex((next + count) % count);
+
+  return (
+    <div className="rs-slider">
+      <div
+        className="rs-slider__track"
+        style={{ transform: `translateX(-${index * 100}%)` }}
+      >
+        {images.map((img) => (
+          <img
+            key={img.src}
+            src={img.src}
+            alt={img.alt}
+            className="rs-slider__img"
+          />
+        ))}
+      </div>
+
+      {count > 1 && (
+        <>
+          <button
+            type="button"
+            className="rs-slider__arrow rs-slider__arrow--prev"
+            aria-label="Previous design"
+            onClick={(e) => {
+              e.preventDefault();
+              go(index - 1);
+            }}
+          >
+            <svg viewBox="0 0 16 16" fill="none">
+              <path d="M10 3 6 8l4 5" stroke="currentColor" strokeWidth="1.6" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            className="rs-slider__arrow rs-slider__arrow--next"
+            aria-label="Next design"
+            onClick={(e) => {
+              e.preventDefault();
+              go(index + 1);
+            }}
+          >
+            <svg viewBox="0 0 16 16" fill="none">
+              <path d="M6 3l4 5-4 5" stroke="currentColor" strokeWidth="1.6" />
+            </svg>
+          </button>
+
+          <div className="rs-slider__dots">
+            {images.map((img, i) => (
+              <button
+                key={img.src}
+                type="button"
+                className={`rs-slider__dot${i === index ? " is-active" : ""}`}
+                aria-label={`Show ${img.alt}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  go(i);
+                }}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -121,9 +198,6 @@ export default function Home() {
       {/* ---------- HERO ---------- */}
       <section className="rs-hero">
         <div className="rs-hero__text">
-          <p className="rs-eyebrow rs-fade" style={{ "--d": "0ms" }}>
-            Simple. Mindful. Meaningful.
-          </p>
           <h1 className="rs-hero__title">
             <span className="rs-fade" style={{ "--d": "90ms" }}>
               Think Better.
@@ -141,9 +215,8 @@ export default function Home() {
               </svg>
             </span>
           </h1>
-          <p className="rs-hero__sub rs-fade" style={{ "--d": "280ms" }}>
-            Minimal notebooks crafted for modern thinkers.
-          </p>
+          <br></br>
+          <br></br>
           <Link to="/products" className="rs-cta rs-fade" style={{ "--d": "370ms" }}>
             Explore Collection
             <svg viewBox="0 0 16 16" fill="none">
@@ -153,31 +226,45 @@ export default function Home() {
         </div>
 
         <div className="rs-hero__art rs-fade" style={{ "--d": "220ms" }}>
-          <div className="rs-notebook rs-notebook--hero">
-            <span className="rs-notebook__spine" />
-            <span className="rs-notebook__label">RIGHT SIDE</span>
+          <div className="rs-flipbook" aria-label="Beach Day notebook, hover to see the back cover">
+            <div className="rs-flipbook__inner">
+              <img
+                src={notebookFront}
+                alt="RightSide Beach Day notebook — front cover"
+                className="rs-flipbook__face rs-flipbook__face--front"
+              />
+              <img
+                src={notebookBack}
+                alt="RightSide Beach Day notebook — back cover"
+                className="rs-flipbook__face rs-flipbook__face--back"
+              />
+            </div>
           </div>
           <p className="rs-hero__art-note rs-fade" style={{ "--d": "320ms" }}>
             I wish, you always write on the best side of a notebook…
             the rightside!
           </p>
         </div>
+
+        <img src={verticalLogo} alt="RightSide" className="rs-hero__vlogo" />
       </section>
 
       {/* ---------- FEATURES ---------- */}
       <section className="rs-features">
-        {FEATURES.map((f, i) => (
-          <div
-            className="rs-feature"
-            key={f.title}
-            data-reveal
-            style={{ "--i": i }}
-          >
-            <FeatureIcon type={f.icon} />
-            <h3>{f.title}</h3>
-            <p>{f.copy}</p>
-          </div>
-        ))}
+        <div className="rs-features__inner">
+          {FEATURES.map((f, i) => (
+            <div
+              className="rs-feature"
+              key={f.title}
+              data-reveal
+              style={{ "--i": i }}
+            >
+              <FeatureIcon type={f.icon} />
+              <h3>{f.title}</h3>
+              <p>{f.copy}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* ---------- FEATURED COLLECTION ---------- */}
@@ -192,31 +279,24 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="rs-grid">
-          {PRODUCTS.map((p, i) => (
-            <article
-              className="rs-card"
-              key={p.name}
-              data-reveal
-              style={{ "--i": i }}
-            >
-              <div className="rs-card__art">
-                <img src={p.image} alt={p.name} className="rs-card__img" />
+        <div className="rs-grid rs-grid--single">
+          <article className="rs-card" data-reveal style={{ "--i": 0 }}>
+            <div className="rs-card__art">
+              <ProductSlider images={PRODUCT.images} />
+            </div>
+            <div className="rs-card__info">
+              <div>
+                <h4>{PRODUCT.name}</h4>
+                <p className="rs-specs">{PRODUCT.specs}</p>
+                <p className="rs-price">{PRODUCT.price}</p>
               </div>
-              <div className="rs-card__info">
-                <div>
-                  <h4>{p.name}</h4>
-                  <p className="rs-specs">{p.specs}</p>
-                  <p className="rs-price">{p.price}</p>
-                </div>
-                <Link to="/products" className="rs-arrow" aria-label={`View ${p.name}`}>
-                  <svg viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" />
-                  </svg>
-                </Link>
-              </div>
-            </article>
-          ))}
+              <Link to="/products" className="rs-arrow" aria-label={`View ${PRODUCT.name}`}>
+                <svg viewBox="0 0 16 16" fill="none">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" />
+                </svg>
+              </Link>
+            </div>
+          </article>
         </div>
       </section>
 

@@ -37,6 +37,10 @@ const PRODUCTS = [
     name: "Barnyard",
     images: [barnyardFlat, barnyardStanding],
   },
+  {
+    name: "Notebook",
+    images: [null],
+  },
 ];
 
 /** Shared specs — every notebook in the collection is the same
@@ -53,6 +57,8 @@ const SPECS = {
  * hover-only) so they work on touch, plus dot indicators. */
 function ProductGallery({ images, name }) {
   const [index, setIndex] = useState(0);
+  const current = images[index];
+  const hasMultiple = images.length > 1;
 
   const go = (dir) => {
     setIndex((i) => (i + dir + images.length) % images.length);
@@ -60,37 +66,50 @@ function ProductGallery({ images, name }) {
 
   return (
     <div className="rs-gallery">
-      <img src={images[index]} alt={`${name} notebook, view ${index + 1}`} className="rs-gallery__img" />
+      {current ? (
+        <img src={current} alt={`${name} notebook, view ${index + 1}`} className="rs-gallery__img" />
+      ) : (
+        <div className="rs-gallery__placeholder">
+          <svg viewBox="0 0 40 40" className="rs-gallery__placeholder-icon">
+            <path d="M9 11 C9 9 10 8 13 8 L27 8 C30 8 31 9 31 12 L31 28 C31 31 30 32 27 32 L13 32 C10 32 9 31 9 28 Z" />
+          </svg>
+          <span>Coming soon</span>
+        </div>
+      )}
 
-      <button
-        className="rs-gallery__btn rs-gallery__btn--prev"
-        onClick={() => go(-1)}
-        aria-label="Previous image"
-      >
-        <svg viewBox="0 0 16 16" fill="none">
-          <path d="M10 3 5 8l5 5" stroke="currentColor" strokeWidth="1.5" />
-        </svg>
-      </button>
-      <button
-        className="rs-gallery__btn rs-gallery__btn--next"
-        onClick={() => go(1)}
-        aria-label="Next image"
-      >
-        <svg viewBox="0 0 16 16" fill="none">
-          <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" />
-        </svg>
-      </button>
-
-      <div className="rs-gallery__dots">
-        {images.map((_, i) => (
+      {hasMultiple && (
+        <>
           <button
-            key={i}
-            className={`rs-gallery__dot ${i === index ? "is-active" : ""}`}
-            onClick={() => setIndex(i)}
-            aria-label={`Show image ${i + 1}`}
-          />
-        ))}
-      </div>
+            className="rs-gallery__btn rs-gallery__btn--prev"
+            onClick={() => go(-1)}
+            aria-label="Previous image"
+          >
+            <svg viewBox="0 0 16 16" fill="none">
+              <path d="M10 3 5 8l5 5" stroke="currentColor" strokeWidth="1.5" />
+            </svg>
+          </button>
+          <button
+            className="rs-gallery__btn rs-gallery__btn--next"
+            onClick={() => go(1)}
+            aria-label="Next image"
+          >
+            <svg viewBox="0 0 16 16" fill="none">
+              <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" />
+            </svg>
+          </button>
+
+          <div className="rs-gallery__dots">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                className={`rs-gallery__dot ${i === index ? "is-active" : ""}`}
+                onClick={() => setIndex(i)}
+                aria-label={`Show image ${i + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -135,6 +154,14 @@ export default function Products() {
         </p>
       </section>
 
+      {/* ---------- PRICING (shared across the collection) ---------- */}
+      <section className="rs-price-banner">
+        <span className="rs-price-banner__pack">{SPECS.pack}</span>
+        <span className="rs-price-banner__divider" aria-hidden="true">·</span>
+        <span className="rs-price-banner__price">{SPECS.price}</span>
+        <span className="rs-price-banner__note">— same for every design</span>
+      </section>
+
       {/* ---------- PRODUCT GRID ---------- */}
       <section className="rs-shop-grid">
         {PRODUCTS.map((p, i) => (
@@ -143,20 +170,12 @@ export default function Products() {
 
             <div className="rs-product__info">
               <h3>{p.name}</h3>
-              <p className="rs-product__pack">{SPECS.pack} · {SPECS.price}</p>
 
               <ul className="rs-product__specs">
                 <li>{SPECS.size}</li>
                 <li>{SPECS.pages}</li>
                 <li>{SPECS.paper}</li>
               </ul>
-
-              <button className="rs-cta rs-product__cta">
-                Add to Cart
-                <svg viewBox="0 0 16 16" fill="none">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" />
-                </svg>
-              </button>
             </div>
           </article>
         ))}
