@@ -5,7 +5,7 @@
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
    =========================================================== */
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&family=Sacramento&display=swap");
 
 /* Kills the default browser margin that shows as a white sliver
    around the page, and matches the body behind it to the site bg
@@ -15,7 +15,8 @@ body {
   margin: 0;
   padding: 0;
   background: #efe8db;
-  overflow-x: hidden; /* guards against the 100vw hero bleed causing a horizontal scrollbar */
+  overflow-x: hidden;
+  /* guards against the 100vw hero bleed causing a horizontal scrollbar */
 }
 
 #root {
@@ -23,7 +24,8 @@ body {
 }
 
 html {
-  font-size: 92%; /* pulls the whole page in slightly so less scrolling is needed */
+  font-size: 92%;
+  /* pulls the whole page in slightly so less scrolling is needed */
 }
 
 .rs {
@@ -179,13 +181,11 @@ html {
   transform: translateX(-50%);
   z-index: 0;
   pointer-events: none;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent calc(var(--rule-gap) - 1px),
-    rgba(85, 80, 63, 0.16) calc(var(--rule-gap) - 1px),
-    rgba(85, 80, 63, 0.16) var(--rule-gap)
-  );
+  background-image: repeating-linear-gradient(to bottom,
+      transparent 0,
+      transparent calc(var(--rule-gap) - 1px),
+      rgba(85, 80, 63, 0.16) calc(var(--rule-gap) - 1px),
+      rgba(85, 80, 63, 0.16) var(--rule-gap));
 }
 
 .rs-hero::after {
@@ -196,14 +196,12 @@ html {
   pointer-events: none;
   background-image:
     /* left margin line */
-    linear-gradient(
-      to right,
+    linear-gradient(to right,
       transparent 0,
       transparent calc(var(--margin-inset) - 2px),
       rgba(193, 68, 58, 0.38) calc(var(--margin-inset) - 2px),
       rgba(193, 68, 58, 0.38) var(--margin-inset),
-      transparent var(--margin-inset)
-    );
+      transparent var(--margin-inset));
 }
 
 .rs-hero__text,
@@ -212,25 +210,6 @@ html {
   z-index: 1;
 }
 
-/* vertical logo, sitting where the right red margin line used to be */
-.rs-hero__vlogo {
-  position: absolute;
-  top: 50%;
-  right: 18px;
-  transform: translateY(-50%);
-  width: 68px;
-  height: auto;
-  max-height: 68%;
-  object-fit: contain;
-  z-index: 2;
-  pointer-events: none;
-}
-
-@media (max-width: 900px) {
-  .rs-hero__vlogo {
-    display: none;
-  }
-}
 
 /* handwritten note, sits to the right of the notebook illustration,
    in the same cursive voice as the wish-note on the reference page.
@@ -239,14 +218,25 @@ html {
    is a small fine-tune knob if your font's baseline sits a touch off. */
 .rs-hero__art-note {
   --note-nudge: 4px;
-  font-family: var(--font-hand);
-  font-weight: 600;
-  font-size: 1.45rem;
-  line-height: var(--rule-gap);
+  font-family: "Caveat", cursive;
+  font-weight: 400;
+  font-size: 1.7rem;
+  line-height: 1.7;
   color: var(--ink-soft);
   text-align: left;
-  max-width: 15ch;
+  max-width: 22ch;
   margin-top: var(--note-nudge);
+}
+
+/* The "the rightside!" animated word — same Sacramento, rust accent */
+.rs-writing-animated {
+  display: inline;
+  font-family: "Caveat", cursive;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 /* ===================== NAV ===================== */
@@ -331,7 +321,6 @@ html {
   gap: 4rem;
   align-items: center;
   position: relative;
-  padding-right:150px;
 }
 
 .rs-hero__title {
@@ -394,7 +383,7 @@ html {
   justify-content: flex-start;
   gap: 2rem;
   min-height: 280px;
-  padding-right:30px;
+  padding-right: 30px;
 }
 
 /* ---------- notebook illustration (CSS, no stock photos) ---------- */
@@ -469,47 +458,77 @@ html {
   opacity: 0.75;
 }
 
-/* ---------- hero notebook, hover-flip (photo front/back) ---------- */
-.rs-flipbook {
-  width: 190px;
-  height: 250px;
-  perspective: 1400px;
+/* ---------- hero main vertical logo with premium floating and sketch-in animations ---------- */
+.rs-hero__main-logo {
+  height: clamp(180px, 25vw, 250px);
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 15px rgba(27, 27, 24, 0.1));
+  transition: transform 0.4s ease, filter 0.4s ease;
+  animation:
+    rsSketchReveal 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+    rsFloat 6s ease-in-out infinite 1.5s;
   cursor: pointer;
+  pointer-events: auto;
+  z-index: 2;
+  transform-origin: center bottom;
 }
 
-.rs-flipbook__inner {
+.rs-hero__main-logo:hover {
+  transform: scale(1.05) rotate(1deg);
+  filter: drop-shadow(0 20px 20px rgba(27, 27, 24, 0.15));
+}
+
+@keyframes rsSketchReveal {
+  0% {
+    clip-path: inset(0 0 100% 0);
+    filter: drop-shadow(0 15px 15px rgba(27, 27, 24, 0.1)) grayscale(100%) opacity(0);
+    transform: scale(0.95);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 0);
+    filter: drop-shadow(0 15px 15px rgba(27, 27, 24, 0.1)) grayscale(0%) opacity(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes rsFloat {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(-0.5deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+/* ---------- pencil writing animation ---------- */
+.rs-writing-container {
   position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 3px 10px 10px 3px;
-  box-shadow: var(--shadow);
-  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  transform-style: preserve-3d;
+  display: inline-block;
 }
 
-.rs-flipbook:hover .rs-flipbook__inner {
-  transform: rotateY(180deg);
+.rs-pencil-cursor {
+  display: inline-block;
+  font-size: 1.25rem;
+  margin-left: 2px;
+  transform-origin: bottom left;
+  animation: rsPencilWiggle 0.18s ease-in-out infinite alternate;
+  vertical-align: middle;
 }
 
-.rs-flipbook__face {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 3px 10px 10px 3px;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
+@keyframes rsPencilWiggle {
+  0% {
+    transform: rotate(0deg) translate(0, 0);
+  }
 
-.rs-flipbook__face--back {
-  transform: rotateY(180deg);
-}
-
-/* touch devices have no hover — tap toggles via :active as a fallback */
-@media (hover: none) {
-  .rs-flipbook:active .rs-flipbook__inner {
-    transform: rotateY(180deg);
+  100% {
+    transform: rotate(-15deg) translate(-2px, -3px);
   }
 }
 
@@ -868,37 +887,45 @@ html {
   .rs-hero {
     grid-template-columns: 1fr;
     text-align: center;
-    padding-right:2rem;
+    padding-right: 2rem;
   }
+
   .rs-hero__text {
     padding-left: 0;
   }
+
   .rs-hero__sub {
     margin-left: auto;
     margin-right: auto;
   }
+
   .rs-hero__art {
     order: -1;
-    justify-content:center;
-    padding-right:0;
+    justify-content: center;
+    padding-right: 0;
   }
+
   .rs-hero__art-note {
     max-width: 26ch;
     text-align: center;
   }
+
   .rs-features__inner,
   .rs-grid {
     grid-template-columns: 1fr;
   }
+
   .rs-feature {
     border-left: none;
     border-top: 1px solid var(--line);
     padding: 1.5rem 0 0;
   }
+
   .rs-feature:first-child {
     border-top: none;
     padding-top: 0;
   }
+
   .rs-footer {
     grid-template-columns: 1fr 1fr;
   }
@@ -906,11 +933,25 @@ html {
 
 @media (max-width: 560px) {
   .rs {
-    --margin-inset: 46px;
+    --margin-inset: 32px;
   }
+
+  .rs-nav__inner {
+    padding: 0.8rem 1rem;
+    justify-content: space-between;
+  }
+
   .rs-nav__links {
-    display: none;
+    display: flex;
+    gap: 1.2rem;
+    font-size: 0.8rem;
+    margin-left: auto;
   }
+
+  .rs-bag {
+    margin-left: 1.2rem;
+  }
+
   .rs-footer {
     grid-template-columns: 1fr;
   }
@@ -924,6 +965,7 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .rs-fade,
   [data-reveal] {
     animation: none !important;
@@ -931,13 +973,16 @@ html {
     opacity: 1 !important;
     transform: none !important;
   }
+
   .rs-underline path {
     animation: none !important;
     stroke-dashoffset: 0 !important;
   }
+
   .rs-sprig {
     animation: none !important;
   }
+
   .rs-flipbook__inner {
     transition: none !important;
   }

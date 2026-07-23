@@ -53,27 +53,37 @@ const SPECS = {
   paper: "70 GSM — tuned for RightSide's smoothness",
 };
 
-/** Image gallery with prev/next buttons that stay visible (not
- * hover-only) so they work on touch, plus dot indicators. */
-function ProductGallery({ images, name }) {
+/** Image gallery with prev/next buttons and a 3-D book-lift on hover. */
+function ProductGallery({ images, name, comingSoon }) {
   const [index, setIndex] = useState(0);
   const current = images[index];
-  const hasMultiple = images.length > 1;
+  const hasMultiple = images.length > 1 && !comingSoon;
 
   const go = (dir) => {
     setIndex((i) => (i + dir + images.length) % images.length);
   };
 
   return (
-    <div className="rs-gallery">
-      {current ? (
-        <img src={current} alt={`${name} notebook, view ${index + 1}`} className="rs-gallery__img" />
-      ) : (
+    <div className={`rs-gallery${comingSoon ? " rs-gallery--soon" : ""}`}>
+      {comingSoon ? (
         <div className="rs-gallery__placeholder">
-          <svg viewBox="0 0 40 40" className="rs-gallery__placeholder-icon">
-            <path d="M9 11 C9 9 10 8 13 8 L27 8 C30 8 31 9 31 12 L31 28 C31 31 30 32 27 32 L13 32 C10 32 9 31 9 28 Z" />
+          <svg viewBox="0 0 48 60" className="rs-gallery__book-icon" fill="none">
+            <rect x="4" y="2" width="38" height="56" rx="3" stroke="currentColor" strokeWidth="1.6"/>
+            <rect x="4" y="2" width="6" height="56" rx="2" fill="currentColor" opacity="0.15"/>
+            <line x1="14" y1="16" x2="36" y2="16" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+            <line x1="14" y1="22" x2="36" y2="22" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+            <line x1="14" y1="28" x2="28" y2="28" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
           </svg>
-          <span>Coming soon</span>
+          <span className="rs-gallery__soon-label">Coming soon</span>
+        </div>
+      ) : (
+        <div className="rs-gallery__book-wrap">
+          <img
+            src={current}
+            alt={`${name} notebook, view ${index + 1}`}
+            className="rs-gallery__img"
+            draggable={false}
+          />
         </div>
       )}
 
@@ -166,7 +176,11 @@ export default function Products() {
       <section className="rs-shop-grid">
         {PRODUCTS.map((p, i) => (
           <article className="rs-product" key={p.name} data-reveal style={{ "--i": i }}>
-            <ProductGallery images={p.images} name={p.name} />
+            <ProductGallery
+              images={p.images.filter(Boolean)}
+              name={p.name}
+              comingSoon={p.images.every(img => img === null)}
+            />
 
             <div className="rs-product__info">
               <h3>{p.name}</h3>
