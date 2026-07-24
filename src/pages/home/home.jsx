@@ -331,7 +331,7 @@ export default function Home() {
       <section className="rs-quote" data-reveal>
         <p>
           <span className="rs-quote__mark">“</span>
-          Every great idea begins with a blank page.
+          Every great idea begins on a right-side page
           <span className="rs-quote__mark">”</span>
         </p>
       </section>
